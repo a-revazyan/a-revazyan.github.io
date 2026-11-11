@@ -155,7 +155,6 @@ body .hall-top, body .page-head { padding-right: 60px; } /* body — чтобы 
 .employee img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 12%; filter: sepia(0.35) contrast(1.05); }
 .employee b { padding: 0.3cqh 0 0; font: 500 clamp(5px, 0.95cqh, 10px) / 1.15 var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.08em; }
 
-.br-m { display: none; }
 .foyer-nav { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; padding: 22px 16px calc(16px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, rgba(28, 14, 8, 0.7)); }
 .pocket { font: 12px var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue); }
 
@@ -396,7 +395,7 @@ body .hall-top, body .page-head { padding-right: 60px; } /* body — чтобы 
   .hall-title b { font-size: 17px; }
   .hall-title { flex: 1; }
   .sortie { padding: 6px 9px; letter-spacing: 0.12em; }
-  .sortie small { display: none; } /* в узкой шапке не помещается рядом с кнопкой звука */
+  .sortie small { font-size: 9px; letter-spacing: 0.04em; } /* русская подпись под SORTIE */
   .hall-bottom { flex-wrap: wrap; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); }
   .hall-bottom .episodes { flex-basis: 100%; }
   .hall-bottom .btn { flex: 1; padding: 10px 8px; font-size: 13px; letter-spacing: 0.1em; }
@@ -404,8 +403,8 @@ body .hall-top, body .page-head { padding-right: 60px; } /* body — чтобы 
   .page { padding: 10px 14px 60px; }
   .page-head .link { font-size: 12px; }
   /* ссылки — строкой сверху, заголовок под ними во всю ширину */
-  .page-head { flex-wrap: wrap; row-gap: 0; }
-  .page-head > div { order: 3; flex-basis: 100%; }
+  .page-head { display: grid; grid-template-columns: auto auto; justify-content: space-between; align-items: center; row-gap: 0; }
+  .page-head > div { grid-column: 1 / -1; grid-row: 2; }
   .menu-row { flex-direction: column; align-items: stretch; gap: 10px; }
   .sizes button { flex: 1; min-width: 0; }
   .director { grid-template-columns: 1fr; gap: 26px; }
@@ -421,6 +420,7 @@ body .hall-top, body .page-head { padding-right: 60px; } /* body — чтобы 
   .sound-toggle { display: none; }
   body .hall-top { padding-right: 12px; }
   body .page-head { padding-right: 0; }
+  body .bar-head { padding: 8px 14px 6px; }
   /* телефон: вертикальный фасад (public/art/facade-mobile.jpg, 1520×2688) на весь первый экран,
      табло сеансов идёт списком под ним. Высота картинки = 176.84vw, отсюда координаты в vw. */
   html { scroll-behavior: smooth; }
@@ -429,7 +429,8 @@ body .hall-top, body .page-head { padding-right: 60px; } /* body — чтобы 
   .coupon-plain { display: block; }
   .bar-scene { width: 100%; }
   .page-head small { font-size: 10px; letter-spacing: 0.1em; white-space: nowrap; }
-  .foyer-nav .br-m { display: block; }
+  .foyer-nav .skip-word { display: none; } /* на телефоне кнопка просто «Смотреть всё» */
+  .foyer-nav { align-items: stretch; } /* обе кнопки одной высоты */
   .foyer-nav .btn { flex: 1; padding: 10px 12px; font-size: 13px; letter-spacing: 0.1em; }
   .pocket { flex-basis: 100%; order: -1; text-align: center; }
   .facade { height: auto; overflow: visible; }

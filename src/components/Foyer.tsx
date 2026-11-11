@@ -176,7 +176,8 @@ export default function Foyer() {
 
       <nav className="foyer-nav">
         <Link href="/program" className="btn">
-          Пропустить <span className="br-m" />и смотреть всё
+          <span className="skip-word">Пропустить и</span>
+          <span>смотреть всё</span>
         </Link>
         <Link href="/bar" className="btn btn-ghost">
           Буфет
