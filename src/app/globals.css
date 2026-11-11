@@ -1,0 +1,457 @@
+/* Палитра — по референсу фасада: голубой, бордовый, кремовый, тёмно-коричневый.
+   Шрифты, ровно три: --f-display (Cormorant Garamond) — только заголовки; --f-board (Oswald) — только
+   кнопки (.btn, .skip, SORTIE, «Начать сеанс», серии, размеры S/M/L); --f-text (Inter) — всё остальное. */
+:root {
+  --blue: #86b0cd;
+  --red: #720000;
+  --cream: #f0eae7;
+  --brown: #321a0f;
+
+  /* производные оттенки тех же четырёх цветов */
+  --blue-deep: #5f8aa8;
+  --red-deep: #4c0000;
+  --dark: #1c0e08; /* темнота зала */
+  --bulb: #ffd9a0; /* тёплый свет ламп */
+  --line: rgba(240, 234, 231, 0.2);
+  --ink-line: rgba(50, 26, 15, 0.22);
+  --ease: cubic-bezier(0.65, 0, 0.2, 1);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--brown);
+  color: var(--cream);
+  font: 16px/1.55 var(--f-text), 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+h1, h2, h3 { margin: 0; line-height: 1.05; text-wrap: balance; text-transform: uppercase; }
+h1, h2 { font-family: var(--f-display), 'Cormorant Garamond', 'Times New Roman', serif; font-weight: 500; letter-spacing: 0.1em; }
+h3 { font: 500 26px var(--f-display), serif; letter-spacing: 0.08em; margin: 40px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+h3 i { font: italic 16px var(--f-text), sans-serif; text-transform: none; letter-spacing: 0; color: var(--blue); margin-left: 10px; }
+a { color: inherit; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+img { display: block; max-width: 100%; }
+small { font-size: 13px; }
+.mono { font-family: var(--f-text), sans-serif; font-variant-numeric: tabular-nums; letter-spacing: 0.06em; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 46px; padding: 10px 24px;
+  background: var(--red); color: var(--cream); border: 1px solid var(--red);
+  font: 500 15px var(--f-board), sans-serif; text-transform: uppercase; letter-spacing: 0.14em; text-decoration: none;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.btn:hover { background: #8c0a0a; }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.btn-ghost { background: rgba(50, 26, 15, 0.6); border-color: var(--cream); }
+.btn-ghost:hover { background: var(--cream); color: var(--brown); }
+.btn-light { background: var(--cream); color: var(--brown); border-color: var(--cream); min-width: 150px; }
+.btn-light:hover { background: var(--blue); border-color: var(--blue); }
+.link { color: var(--cream); opacity: 0.85; text-decoration: none; font: 14px var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 0; }
+.link:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+
+/* плашка-заглушка под будущий арт */
+.ph { border: 1px dashed var(--blue); color: var(--blue); font: 12px var(--f-text), sans-serif; display: grid; place-items: center; text-align: center; padding: 10px; }
+.ph-label { font: 11px var(--f-text), sans-serif; color: var(--blue); opacity: 0.85; }
+.todo { font: 12px var(--f-text), sans-serif; color: var(--blue); }
+
+/* реплики — как субтитры в кино */
+.subtitle { margin: 0; font: italic 19px/1.3 var(--f-text), sans-serif; color: #fff1b8; text-shadow: 0 1px 0 #000, 0 0 6px rgba(0, 0, 0, 0.9); text-align: center; }
+.subtitle.is-busy { animation: blink 0.3s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0.45; } }
+
+.skip {
+  position: absolute; right: 16px; bottom: 16px; z-index: 5;
+  padding: 12px 18px; min-height: 44px;
+  background: rgba(28, 14, 8, 0.75); border: 1px solid var(--line);
+  font: 500 13px var(--f-board), sans-serif; text-transform: uppercase; letter-spacing: 0.14em;
+}
+.skip:hover { border-color: var(--cream); }
+
+/* ───────── Звук ───────── */
+.sound-toggle { position: fixed; top: 10px; right: 12px; z-index: 60; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; background: rgba(28, 14, 8, 0.6); color: var(--cream); border: 1px solid var(--line); backdrop-filter: blur(4px); transition: background 0.2s; }
+.sound-toggle:hover { background: rgba(28, 14, 8, 0.85); }
+.sound-toggle[aria-pressed='false'] { color: rgba(240, 234, 231, 0.55); }
+/* шапки с правой ссылкой — освобождаем место под кнопку звука */
+body .hall-top, body .page-head { padding-right: 60px; } /* body — чтобы не перебивали мобильные отступы ниже */
+
+/* ───────── Афиши ───────── */
+.poster { aspect-ratio: 2 / 3; background: var(--dark); overflow: hidden; width: 100%; container-type: inline-size; }
+.poster img { width: 100%; height: 100%; object-fit: cover; }
+.poster-stub {
+  height: 100%; padding: 9%; display: flex; flex-direction: column; justify-content: space-between; text-align: center;
+  background: var(--cream); color: var(--brown); border: 4cqi solid var(--red);
+}
+.poster-stub b { font: 500 clamp(9px, 10.5cqi, 28px) / 1.05 var(--f-display), serif; text-transform: uppercase; letter-spacing: 0.06em; overflow-wrap: anywhere; }
+.poster-stub small { font: clamp(7px, 5.5cqi, 12px) var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); }
+
+/* ───────── Заставка ───────── */
+.intro { position: fixed; inset: 0; z-index: 40; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; padding: 24px; background: var(--red); text-align: center; }
+.intro-note { position: absolute; top: 22px; margin: 0; font: 12px var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.8; }
+.intro-title { width: min(100%, 520px); font: 600 clamp(34px, 9vw, 62px) / 1.25 var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; }
+.intro-title p { margin: 0; display: flex; justify-content: space-between; gap: 16px; }
+.intro-title p:first-child { font-size: 0.34em; letter-spacing: 0.3em; margin-bottom: 0.6em; }
+.intro-title .spread { display: block; text-align: justify; text-align-last: justify; letter-spacing: 0.3em; margin-right: -0.3em; }
+.intro-text { margin: 0; max-width: 22em; font-size: 15px; opacity: 0.9; }
+
+/* ───────── Сцена 1. Фасад ───────── */
+/* Фон — отрисованный фасад (public/art/facade.jpg, 2400×1357). Всё кликабельное лежит поверх
+   в процентах от картинки, поэтому при замене арта правятся только координаты ниже. */
+.foyer { position: relative; min-height: 100dvh; background: var(--dark); }
+/* Фасад заполняет экран целиком, как background-size: cover: лишнее срезается по краям картинки.
+   Срезать можно только «безопасные» поля — кирпич сверху, пол снизу, ~3% по бокам; если экран
+   совсем другой пропорции, остаток добивается размытым продолжением той же картинки, а не пустым фоном. */
+.facade { position: relative; height: 100dvh; overflow: hidden; }
+.facade::before { content: ''; position: absolute; inset: -40px; background: url('/art/facade.jpg') center / cover; filter: blur(24px) brightness(0.6); }
+.scene { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(max(100vw, 100dvh * 1.7686), 107vw, 100dvh * 2.157); aspect-ratio: 2400 / 1357; container-type: size; }
+.plate { position: absolute; inset: 0; }
+.plate .art { width: 100%; height: 100%; object-fit: cover; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+/* табло сеансов: два пустых крыла маркизы, по 6 строк-дорожек и 2 колонки в каждом */
+.marquee { display: contents; }
+.marquee-mid { display: none; } /* «CINÉMA» уже есть на картинке */
+.wing { --rh: calc(17cqh / 6); position: absolute; top: 22.9%; height: 17%; width: 30.3%; padding: 0 0.6%; columns: 2; column-gap: 3%; column-fill: auto; color: var(--brown); }
+.wing-l { left: 3.4%; }
+.wing-r { left: 66.4%; }
+.wing h2 { height: var(--rh); margin: 0; display: flex; align-items: center; font: 500 clamp(7px, 1.3cqh, 15px) var(--f-text), sans-serif; letter-spacing: 0.1em; color: var(--red); white-space: nowrap; }
+/* одно-разделное крыло (реклама): заголовок — на всю первую строку, обе колонки начинаются со второй */
+.wing > div:only-child > h2 { column-span: all; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; height: var(--rh); padding: 0 4px; font: 500 clamp(8px, 1.5cqh, 18px) / 1 var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.01em; text-align: left; break-inside: avoid; }
+.row-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row-time { color: var(--red); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.row:hover, .row:focus-visible { background: var(--red); color: var(--cream); }
+.row:hover .row-time, .row:focus-visible .row-time { color: var(--cream); }
+
+/* окно кассы */
+.window { position: absolute; left: 15.2%; top: 57%; width: 15.4%; height: 16.6%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4%; padding: 1%; pointer-events: none; }
+.window { overflow: hidden; background: #160808; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.5); }
+/* кассир (квадратная картинка) вписан по высоте окна целиком, края растворяются в тёмной будке */
+.window img { position: absolute; top: 0; left: 50%; height: 100%; width: auto; aspect-ratio: 1; transform: translateX(-50%); -webkit-mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent); mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent); transition: transform 0.5s var(--ease); }
+.window img.is-busy { transform: translateX(-50%) scale(1.06) translateY(2%); } /* наклоняется оторвать билет */
+/* реплика кассира: кремовое облачко справа от окна, хвостик смотрит на неё */
+.bubble { position: absolute; left: 28.4%; top: 50.6%; z-index: 1; max-width: 11.5%; padding: 0.9cqh 1.3cqh; background: var(--cream); color: var(--brown); border-radius: 1.6cqh; box-shadow: 0 0.6cqh 1.6cqh rgba(28, 14, 8, 0.45); font: 500 clamp(9px, 1.55cqh, 15px) / 1.25 var(--f-text), sans-serif; text-decoration: none; pointer-events: none; cursor: default; transform-origin: 0 100%; animation: bubble-in 0.45s 0.5s var(--ease) both; }
+.bubble::after { content: ''; position: absolute; left: 1.4cqh; bottom: -1.2cqh; border: 0.8cqh solid transparent; border-top: 1.3cqh solid var(--cream); border-left-width: 0; transform: skewX(-18deg); }
+/* подпись внутри окна нужна только телефону */
+.window .subtitle { display: none; }
+@keyframes bubble-in { from { opacity: 0; transform: scale(0.6) translateY(1cqh); } }
+
+/* вход за занавесом → вся программа */
+.entrance { position: absolute; left: 36.4%; top: 46.4%; width: 27.2%; height: 45.4%; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 3%; text-decoration: none; transition: background 0.4s; }
+.entrance:hover, .entrance:focus-visible { background: radial-gradient(60% 70% at 50% 62%, rgba(255, 217, 160, 0.28), transparent 70%); }
+.entrance span { display: flex; flex-direction: column; align-items: center; font: 500 clamp(12px, 2.7cqh, 28px) / 1.1 var(--f-display), serif; text-transform: uppercase; letter-spacing: 0.24em; text-shadow: 0 0 12px #000, 0 0 4px #000; }
+.entrance small { font: clamp(7px, 1.25cqh, 12px) var(--f-text), sans-serif; letter-spacing: 0.1em; margin-top: 0.5em; }
+
+/* афиши на доске справа */
+.affiches { position: absolute; left: 69.5%; top: 53.4%; width: 18.3%; height: 22%; display: flex; align-items: center; justify-content: center; gap: 4%; }
+.frame { flex: 1; display: block; background: #fff; padding: 0.35cqh; box-shadow: 0 2px 8px rgba(50, 26, 15, 0.5); text-decoration: none; transition: transform 0.3s var(--ease); }
+.frame:hover, .frame:focus-visible { transform: scale(1.55); z-index: 3; }
+/* «Сотрудник месяца» висит на левой панели у кассы; координаты — относительно доски с афишами */
+.employee { position: absolute; left: -347%; top: 6%; width: 29%; flex: none; display: flex; flex-direction: column; color: var(--brown); text-align: center; }
+.employee img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 12%; filter: sepia(0.35) contrast(1.05); }
+.employee b { padding: 0.3cqh 0 0; font: 500 clamp(5px, 0.95cqh, 10px) / 1.15 var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.08em; }
+
+.foyer-nav { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; padding: 22px 16px calc(16px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, rgba(28, 14, 8, 0.7)); }
+.pocket { font: 12px var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue); }
+
+/* ───────── Сцены 2–3. Билет и переход ───────── */
+.overlay { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: rgba(28, 14, 8, 0.9); overflow: hidden; animation: fade 0.25s both; }
+@keyframes fade { from { opacity: 0; } }
+
+.ticket-wrap { position: relative; width: min(100%, 620px); animation: ticket-in 0.45s var(--ease) both; }
+@keyframes ticket-in { from { transform: translateY(40vh) rotate(-4deg); opacity: 0; } }
+.ticket { position: relative; aspect-ratio: 1400 / 783; background: var(--cream) url('/art/ticket.jpg') center / 100% 100%; color: var(--brown); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); container-type: inline-size; }
+/* пустое поле бланка под шапкой «CINÉMA ALINA REVAZYAN · BILLET» */
+.ticket-main { position: absolute; left: 5.6%; top: 23.5%; width: 65.5%; bottom: 9.5%; display: flex; flex-direction: column; }
+.ticket-main h2 { font-size: 6.2cqi; line-height: 1.02; letter-spacing: 0.05em; color: var(--red); overflow-wrap: break-word; }
+.ticket-main p { margin: 1.6cqi 0 0; font-size: max(11px, 2.7cqi); line-height: 1.25; }
+.ticket dl { display: flex; gap: 4.4cqi; margin: auto 0 0; padding-top: 1.6cqi; border-top: 1px solid rgba(114, 0, 0, 0.45); }
+.ticket dt { font: max(8px, 1.7cqi) var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); }
+.ticket dd { margin: 0; font: 500 max(14px, 3.8cqi) var(--f-text), sans-serif; }
+.ticket-take { position: absolute; right: 29%; bottom: 11.5%; min-height: 40px; padding: 8px 18px; }
+
+.stage-taking .ticket-wrap { animation: ticket-out 0.65s var(--ease) both; }
+@keyframes ticket-out { 35% { transform: translateY(0) rotate(2deg); } to { transform: translateY(110vh) rotate(6deg); } }
+.hand { position: fixed; left: 50%; bottom: 0; z-index: 2; height: min(40vh, 400px); width: auto; pointer-events: none; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.5)); animation: hand 0.65s var(--ease) both; }
+/* рука выезжает снизу, «берёт» билет и уходит вниз вместе с ним (билет — анимация ticket-out) */
+@keyframes hand { from { transform: translate(-40%, 100%); } 35% { transform: translate(-40%, 0); } to { transform: translate(-40%, 105%); } }
+
+.stage-stub, .stage-corridor { background: var(--dark); padding: 0; }
+.controller, .corridor { position: absolute; inset: 0; overflow: hidden; }
+.controller img, .corridor img { width: 100%; height: 100%; object-fit: cover; }
+.controller img { animation: push-in 0.85s ease-out both; }
+@keyframes push-in { from { transform: scale(1.07); } }
+/* корешок стартует из рук контролёра (центр кадра) и улетает вниз вправо, к счётчику корешков */
+.stub-fly { position: absolute; left: calc(50% - 34px); top: 59%; width: 68px; padding: 6px 6px; background: var(--blue); color: var(--brown); font: 600 8px/1.2 var(--f-text), sans-serif; text-transform: uppercase; text-align: center; border-left: 2px dashed rgba(50, 26, 15, 0.5); box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45); animation: stub-fly 0.85s var(--ease) both; }
+@keyframes stub-fly { 0% { transform: scale(0.9); opacity: 0; } 25% { transform: rotate(-6deg) scale(1.15); opacity: 1; } 45% { transform: rotate(-10deg) scale(1.15); } to { transform: translate(28vw, 36vh) rotate(28deg) scale(0.45); opacity: 0; } }
+.corridor img { transform-origin: 50% 50%; animation: corridor 1.2s ease-in both; }
+@keyframes corridor { from { transform: scale(1); opacity: 0; } 15% { opacity: 1; } 80% { opacity: 1; } to { transform: scale(1.8); opacity: 0; } }
+
+/* ───────── Сцена 4. Зал ───────── */
+.hall { height: 100dvh; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; background: #120805; transition: background 1.2s; }
+.hall.phase-curtain { background: var(--brown); } /* свет ещё горит */
+.hall-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; }
+.hall-top .link { white-space: nowrap; }
+.hall-title { text-align: center; min-width: 0; display: flex; flex-direction: column; }
+.hall-title b { font: 500 22px/1.15 var(--f-display), serif; text-transform: uppercase; letter-spacing: 0.14em; }
+.hall-title span { font-size: 13px; opacity: 0.7; }
+.sortie { display: flex; flex-direction: column; align-items: center; padding: 5px 12px; background: var(--blue); color: var(--brown); text-decoration: none; font: 500 15px/1.1 var(--f-board), sans-serif; letter-spacing: 0.24em; box-shadow: 0 0 16px rgba(134, 176, 205, 0.55); white-space: nowrap; }
+.sortie small { font: 10px var(--f-board), sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+.sortie:hover { background: var(--cream); }
+
+.stage { position: relative; overflow: hidden; container-type: size; background: #0d0604; }
+/* Зал — картинка public/art/hall.jpg (2688×1520), растянута как cover с безопасным срезом (потолок, кресла,
+   края стен). Остаток, если экран совсем другой пропорции, добивается размытым продолжением картинки. */
+.stage::before { content: ''; position: absolute; inset: -40px; background: url('/art/hall.jpg') center / cover; filter: blur(24px) brightness(0.35); }
+.hall-scene { position: absolute; left: 50%; top: 50%; width: min(max(100cqw, 100cqh * 1.7684), 112cqw, 100cqh * 2.4); aspect-ratio: 2688 / 1520; transform: translate(-50%, -50%) scale(var(--zoom, 1)); transform-origin: 50% 48%; transition: transform 1.6s var(--ease); }
+.hall-art { position: absolute; inset: 0; width: 100%; height: 100%; transition: filter 1.4s; }
+/* свет гаснет и камера подъезжает к экрану, как только раздвинулся занавес */
+.hall:not(.phase-curtain) .hall-scene { --zoom: 1.32; }
+.hall:not(.phase-curtain) .hall-art { filter: brightness(0.42); }
+/* чёрный проём сцены на картинке: сюда встают шторы и экран */
+.opening { position: absolute; left: 21.65%; top: 22.9%; width: 56.74%; height: 50.26%; display: flex; align-items: center; overflow: hidden; }
+/* Занавес: public/art/curtain-l.jpg и curtain-r.jpg — две половины одной картинки. Каждая привязана
+   к внутреннему краю своей шторы, поэтому при сужении экрана бархат едет вместе с краем. */
+.curtain { flex: 1; align-self: stretch; background: var(--red-deep) right center / auto 100% repeat-x; box-shadow: inset 0 -70px 60px -40px rgba(0, 0, 0, 0.55); }
+.opening > .curtain:first-child { background-image: url('/art/curtain-l.jpg'); background-position: right center; }
+.screen + .curtain { background-image: url('/art/curtain-r.jpg'); background-position: left center; }
+.screen { flex: none; position: relative; overflow: hidden; background: #000; container-type: inline-size; transition: width 1.2s var(--ease), height 0.8s var(--ease); }
+.screen video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; cursor: pointer; }
+.screen:fullscreen { width: 100% !important; height: 100% !important; }
+
+.notice, .tap, .credits { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 16px; text-align: center; }
+.notice { background: var(--cream); color: var(--brown); animation: fade 0.3s both; }
+.notice b { font: 500 clamp(22px, 9cqi, 58px) / 1 var(--f-display), serif; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); }
+.notice em { font: 500 clamp(11px, 3.2cqi, 16px) var(--f-text), sans-serif; font-style: normal; text-transform: uppercase; letter-spacing: 0.1em; }
+.notice small { max-width: 30em; opacity: 0.8; }
+.notice-cam { position: relative; width: 74px; height: 52px; border: 3px solid var(--brown); border-radius: 6px; margin-bottom: 8px; }
+.notice-cam::before { content: ''; position: absolute; inset: 9px 20px; border: 3px solid var(--brown); border-radius: 50%; }
+.notice-cam i { position: absolute; left: -16px; right: -16px; top: 50%; height: 4px; background: var(--red); transform: rotate(-35deg); }
+.tap { background: rgba(28, 14, 8, 0.55); font: 500 16px var(--f-board), sans-serif; text-transform: uppercase; letter-spacing: 0.18em; }
+.tap span { width: 84px; height: 84px; display: grid; place-items: center; border-radius: 50%; background: var(--red); font-size: 30px; padding-left: 6px; }
+
+.controls { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 10px; padding: 26px 12px 10px; background: linear-gradient(transparent, rgba(28, 14, 8, 0.92)); font-size: 13px; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+.show-ui .controls { opacity: 1; pointer-events: auto; }
+.controls button { min-width: 40px; min-height: 40px; font-size: 16px; color: var(--cream); }
+.controls input { accent-color: var(--blue); height: 28px; margin: 0; }
+.seek { flex: 1; min-width: 40px; }
+.vol { width: 76px; }
+@container (max-width: 430px) { .vol, .controls .mono:first-of-type { display: none; } .controls { gap: 6px; } }
+
+.credits { background: rgba(28, 14, 8, 0.95); overflow-y: auto; justify-content: safe center; animation: fade 0.6s both; }
+.credits small { font: italic 16px var(--f-text), sans-serif; color: var(--blue); }
+.credits h2 { font-size: clamp(22px, 7cqi, 48px); }
+.credits p { margin: 0; }
+.credits .about { max-width: 46ch; font: 15px/1.45 var(--f-text), sans-serif; opacity: 0.85; }
+.credits .spec { font: 11px var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue); border: 1px solid var(--blue); padding: 3px 10px; }
+.credits-nav { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 12px; max-width: 100%; }
+.credits-nav .btn { max-width: 100%; text-align: center; font-size: 13px; }
+
+.hall-bottom { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); }
+.episodes { display: flex; gap: 6px; margin-right: auto; overflow-x: auto; scrollbar-width: none; min-width: 0; }
+.episodes button { flex: none; min-width: 42px; min-height: 42px; padding: 0 12px; border: 1px solid var(--line); font: 14px var(--f-board), sans-serif; letter-spacing: 0.08em; white-space: nowrap; }
+.episodes button.on { background: var(--cream); color: var(--brown); border-color: var(--cream); }
+
+.drawer-back { position: fixed; inset: 0; z-index: 30; background: rgba(28, 14, 8, 0.72); animation: fade 0.2s both; }
+.drawer-back.center { display: grid; place-items: center; padding: 16px; overflow-y: auto; }
+.drawer { position: absolute; top: 0; right: 0; bottom: 0; width: min(100%, 520px); padding: 16px 20px 40px; overflow-y: auto; background: var(--brown); border-left: 6px solid var(--red); animation: drawer 0.35s var(--ease) both; }
+.drawer header { display: flex; justify-content: space-between; align-items: center; }
+@keyframes drawer { from { transform: translateX(100%); } }
+
+/* ───────── Программа ───────── */
+.program-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px 14px; }
+.card { display: flex; flex-direction: column; gap: 2px; text-decoration: none; font-size: 14px; }
+.card .poster { margin-bottom: 8px; transition: transform 0.25s; }
+.card:hover .poster { transform: translateY(-4px); }
+.card > b { font: 600 15px/1.25 var(--f-text), sans-serif; }
+.card span { opacity: 0.75; font-size: 13px; }
+.card .about { margin: 4px 0 2px; font-size: 13px; line-height: 1.4; opacity: 0.9; }
+.card .mono { color: var(--blue); opacity: 1; font-size: 12px; text-transform: uppercase; }
+.card.is-current .poster { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+/* ───────── Общие страницы ───────── */
+.page { max-width: 1040px; margin: 0 auto; padding: 14px 20px 80px; }
+.page-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; text-align: center; padding-bottom: 8px; }
+.page-head small { font: 12px var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue); }
+.page-head h1 { font-size: clamp(30px, 4vw, 44px); }
+.page-head .link { white-space: nowrap; }
+.page-head > div { min-width: 0; }
+
+/* ───────── Сцена 5. Буфет ───────── */
+/* Сцена — картинка public/art/bar.jpg (2688×1520); меню, ценники и купон лежат поверх в процентах */
+.bar-head { max-width: 1240px; margin: 0 auto; padding: 8px 20px 6px; }
+.bar-head h1 { font-size: clamp(26px, 4.4vw, 42px); }
+.bar-scene { position: relative; width: 100%; aspect-ratio: 2688 / 1520; container-type: size; }
+.bar-scene .art { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* табло буфета: 6 дорожек лайтбокса (линии на 8.42/12.11/15.72/19.28/22.83/26.45/30.07 % высоты картинки);
+   каждая позиция меню занимает три дорожки: раздел, услуга, цены — по строке на дорожку */
+.menu-board { position: absolute; left: 2.9%; top: 8.42%; width: 94.2%; height: 21.65%; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(6, 1fr); padding: 0 1%; color: var(--brown); }
+.menu-board button { grid-row: span 3; display: grid; grid-template-rows: repeat(3, 1fr); align-items: center; justify-items: start; min-width: 0; padding: 0 1.4cqh; text-align: left; transition: background 0.2s; }
+.menu-board button > * { line-height: 1; }
+.menu-board button:nth-child(3n + 2) { border-inline: 1px solid rgba(50, 26, 15, 0.22); }
+.menu-board button:hover, .menu-board button:focus-visible { background: rgba(114, 0, 0, 0.08); }
+.menu-board small { font: 500 clamp(7px, 1.25cqh, 13px) var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); }
+.menu-board b { font: 500 clamp(9px, 2.3cqh, 22px) / 1.05 var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.menu-board span { font: 500 clamp(7px, 1.45cqh, 14px) var(--f-text), sans-serif; letter-spacing: 0.06em; color: var(--red); white-space: pre; }
+
+.spot { position: absolute; border-radius: 1.2cqh; transition: background 0.25s, box-shadow 0.25s; }
+.spot:hover, .spot:focus-visible { background: radial-gradient(closest-side, rgba(255, 228, 180, 0.32), transparent); box-shadow: 0 0 0 1px rgba(255, 228, 180, 0.35); outline: none; }
+.tag { position: absolute; left: 50%; top: calc(100% + 1.1cqh); transform: translateX(-50%) rotate(-2deg); display: flex; flex-direction: column; align-items: center; padding: 0.35cqh 0.9cqh 0.45cqh; background: var(--cream); color: var(--brown); border: 1px solid var(--red); box-shadow: 0 2px 5px rgba(28, 14, 8, 0.45); font: 500 clamp(6px, 1.15cqh, 12px) / 1.15 var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; transition: background 0.2s, color 0.2s; }
+.tag b { font-size: 1.45em; letter-spacing: 0.08em; color: var(--red); }
+.spot:nth-child(odd) .tag { transform: translateX(-50%) rotate(2deg); }
+.spot:hover .tag, .spot:focus-visible .tag { background: var(--red); color: var(--cream); }
+.spot:hover .tag b, .spot:focus-visible .tag b { color: var(--cream); }
+
+.coupon { margin: 22px auto 0; max-width: 640px; padding: 14px 18px; background: var(--cream); color: var(--brown); border: 2px dashed var(--red); transform: rotate(-1deg); text-align: center; }
+.coupon b { display: block; font: 500 13px var(--f-text), sans-serif; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); }
+/* купон приклеен к передней панели стойки */
+.coupon-stuck { position: absolute; left: 37%; top: 80.6%; width: 26%; margin: 0; padding: 1cqh 1.6cqh; font-size: clamp(8px, 1.6cqh, 15px); line-height: 1.3; transform: rotate(-1.5deg); box-shadow: 0 3px 8px rgba(28, 14, 8, 0.4); }
+.coupon-stuck b { font-size: clamp(7px, 1.25cqh, 12px); }
+.coupon-plain { display: none; }
+.coupon-won { margin-top: 10px; border-color: var(--blue-deep); }
+.bar-discount { margin: 0; font: 500 14px var(--f-text), sans-serif; color: var(--red); }
+
+.bar-list h3 { margin-top: 28px; }
+.price { font-size: 22px; color: var(--red); font-weight: 500; }
+.composition { margin: 0; font-size: 13px; line-height: 1.45; padding: 8px 10px; background: #fff; }
+
+.bar-card { width: min(100%, 440px); display: flex; flex-direction: column; gap: 12px; padding: 24px; background: var(--cream); color: var(--brown); border-top: 8px solid var(--red); border-bottom: 12px solid var(--blue); }
+.bar-card small { font: 500 12px var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); }
+.bar-card h2 { font-size: 32px; color: var(--red); margin-top: -4px; }
+.bar-card p { margin: 0; }
+.bar-sizes { display: flex; gap: 8px; }
+.bar-sizes button { flex: 1; min-height: 44px; border: 1px solid var(--red); font: 500 20px var(--f-board), sans-serif; color: var(--red); }
+.bar-sizes button.on { background: var(--red); color: var(--cream); }
+.bar-what { font-size: 17px; }
+.bar-gift { font-size: 13px; padding: 8px 10px; border: 1px dashed var(--red); }
+.bar-gift b { font: 500 11px var(--f-text), sans-serif; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); margin-right: 6px; }
+.bar-card .link { color: var(--brown); }
+.menu-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.menu-row > div:first-child { display: flex; flex-direction: column; }
+.menu-row > div:first-child b { font: 500 26px var(--f-display), serif; text-transform: uppercase; letter-spacing: 0.1em; }
+.menu-row > div:first-child span { opacity: 0.8; font-size: 15px; }
+.sizes { display: flex; gap: 8px; }
+.sizes button { display: flex; flex-direction: column; align-items: center; min-width: 96px; padding: 8px 10px; border: 1px solid var(--line); }
+.sizes button:hover { background: var(--blue); border-color: var(--blue); color: var(--brown); }
+.sizes b { font: 500 18px var(--f-board), sans-serif; }
+.sizes span { font-size: 10px; text-transform: uppercase; opacity: 0.85; }
+
+.order { width: min(100%, 460px); display: flex; flex-direction: column; gap: 12px; padding: 24px; background: var(--cream); color: var(--brown); border-top: 8px solid var(--red); }
+.order h2 { color: var(--red); font-size: 34px; }
+.order p { margin: 0; }
+.order p.mono { font-size: 14px; text-transform: uppercase; }
+.order label { display: flex; flex-direction: column; gap: 4px; font: 12px var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; }
+.order input, .order textarea { font: 16px var(--f-text), sans-serif; padding: 10px 12px; background: #fff; color: var(--brown); border: 1px solid var(--ink-line); border-radius: 0; resize: vertical; }
+.hint { font-size: 13px; opacity: 0.75; }
+.order-nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.order .link, .receipt .link { color: var(--brown); }
+.receipt { width: min(100%, 360px); display: flex; flex-direction: column; gap: 6px; padding: 22px 20px; background: #fff; color: var(--brown); font-size: 13px; text-align: center; text-transform: uppercase; }
+.receipt hr { width: 100%; border: 0; border-top: 1px dashed rgba(50, 26, 15, 0.5); margin: 6px 0; }
+.receipt div { display: flex; justify-content: space-between; gap: 12px; text-align: left; }
+.receipt div span:last-child { white-space: nowrap; }
+.receipt .btn { margin-top: 10px; }
+
+/* ───────── Сцена 6. Анкета ───────── */
+.director-page { max-width: 1120px; }
+.director { display: grid; grid-template-columns: minmax(0, 440px) 1fr; gap: 48px; align-items: center; margin-top: 18px; }
+.director-poster { padding: 8px; background: #fff; box-shadow: 0 0 60px rgba(255, 217, 160, 0.28), 0 18px 40px rgba(0, 0, 0, 0.55); transform: rotate(-1.2deg); transform-origin: 50% 0; }
+.director-poster:hover { animation: sway 1.8s ease-in-out infinite; }
+.director-poster img { width: 100%; aspect-ratio: 996 / 1500; }
+.director-notes { display: flex; flex-direction: column; gap: 14px; padding: 30px 32px 32px; background: var(--cream); color: var(--brown); border-top: 8px solid var(--red); border-bottom: 12px solid var(--blue); }
+.director-notes > small { font: 500 12px var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); }
+.director-notes h2 { font-size: clamp(34px, 5vw, 56px); color: var(--red); margin-top: -6px; }
+.director-notes p { margin: 0; }
+.director .lead { font: 17px var(--f-text), sans-serif; margin-top: -8px; color: rgba(50, 26, 15, 0.75); }
+.director .todo { color: var(--blue-deep); }
+.skills { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.skills li { padding: 4px 10px; border: 1px solid rgba(114, 0, 0, 0.5); font: 14px var(--f-text), sans-serif; letter-spacing: 0; color: var(--red); }
+.contacts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 4px 0 0; padding: 14px 0 0; border-top: 1px dashed rgba(114, 0, 0, 0.45); }
+.contacts dt { font: 11px var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); }
+.contacts dd { margin: 0; }
+.contacts a { font: 500 17px var(--f-text), sans-serif; letter-spacing: 0; display: inline-block; padding: 6px 0; }
+.director-nav { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+.director-nav .btn-ghost { background: transparent; color: var(--brown); border-color: var(--brown); }
+.director-nav .btn-ghost:hover { background: var(--brown); color: var(--cream); }
+
+/* ───────── Мобильная версия ───────── */
+@media (max-width: 860px) {
+  body { font-size: 16px; }
+
+  /* на телефоне кнопка «Забрать» уходит под билет: на самом бланке ей тесно */
+  .ticket-take { position: static; width: 100%; margin-top: 14px; min-height: 50px; }
+  .hand { height: 47vh; } /* под билетом ещё кнопка «Забрать» — рука тянется выше */
+  .ticket dl { gap: 5.5cqi; }
+
+  /* телефон: зал без картинки, шторы и экран на всю сцену — иначе вертикальное видео выйдет крошечным */
+  .stage::before, .hall-art { display: none; }
+  .hall-scene, .hall:not(.phase-curtain) .hall-scene { inset: 0; left: 0; top: 0; width: auto; aspect-ratio: auto; transform: none; }
+  .opening { inset: 0; left: 0; top: 0; width: 100%; height: 100%; }
+  .hall-top { padding: 6px 12px; }
+  .hall-title b { font-size: 17px; }
+  .hall-title { flex: 1; }
+  .sortie { padding: 6px 9px; letter-spacing: 0.12em; }
+  .sortie small { display: none; } /* в узкой шапке не помещается рядом с кнопкой звука */
+  .hall-bottom { flex-wrap: wrap; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); }
+  .hall-bottom .episodes { flex-basis: 100%; }
+  .hall-bottom .btn { flex: 1; padding: 10px 8px; font-size: 13px; letter-spacing: 0.1em; }
+
+  .page { padding: 10px 14px 60px; }
+  .page-head .link { font-size: 12px; }
+  /* ссылки — строкой сверху, заголовок под ними во всю ширину */
+  .page-head { flex-wrap: wrap; row-gap: 0; }
+  .page-head > div { order: 3; flex-basis: 100%; }
+  .menu-row { flex-direction: column; align-items: stretch; gap: 10px; }
+  .sizes button { flex: 1; min-width: 0; }
+  .director { grid-template-columns: 1fr; gap: 26px; }
+  .director-poster { width: min(100%, 420px); margin: 0 auto; }
+  .director-notes { padding: 22px 18px 24px; }
+  .director-nav .btn { flex: 1; padding: 10px 12px; font-size: 13px; letter-spacing: 0.08em; }
+  .page-head h1 { font-size: clamp(22px, 7.4vw, 34px); }
+}
+
+/* Вертикальный фасад — только на узких или портретных экранах; низкое широкое окно получает обычную сцену */
+@media (max-width: 640px), (max-width: 860px) and (orientation: portrait) {
+  /* телефон: вертикальный фасад (public/art/facade-mobile.jpg, 1520×2688) на весь первый экран,
+     табло сеансов идёт списком под ним. Высота картинки = 176.84vw, отсюда координаты в vw. */
+  html { scroll-behavior: smooth; }
+  /* буфет: картинка стойки баннером, табло/ценники/купон на ней слишком мелкие — меню списком ниже */
+  .menu-board, .tag, .coupon-stuck { display: none; }
+  .coupon-plain { display: block; }
+  .bar-scene { width: 100%; }
+  .page-head small { font-size: 10px; letter-spacing: 0.1em; white-space: nowrap; }
+  .foyer-nav .btn { flex: 1; padding: 10px 12px; font-size: 13px; letter-spacing: 0.1em; }
+  .pocket { flex-basis: 100%; order: -1; text-align: center; }
+  .facade { height: auto; overflow: visible; }
+  .facade::before { display: none; }
+  .scene { position: relative; left: auto; top: auto; transform: none; width: 100%; aspect-ratio: auto; container-type: normal; margin: 0; }
+  .foyer-nav { position: sticky; padding-top: 12px; background: var(--brown); }
+  .plate { position: relative; inset: auto; aspect-ratio: 1520 / 2688; }
+  .entrance { left: 31.2%; top: 36.2%; width: 37.9%; height: 51.3%; padding-bottom: 12%; }
+  .entrance span { font-size: 17px; }
+  .entrance small { font-size: 9px; }
+  .window { left: 8vw; top: 84.9vw; width: 16.8vw; height: 24.2vw; padding: 1vw; pointer-events: auto; text-decoration: none; }
+  .window::after { content: ''; position: absolute; inset: 55% 0 0; background: linear-gradient(transparent, rgba(28, 14, 8, 0.85)); }
+  .window .subtitle { display: block; position: relative; z-index: 1; font-size: 9px; line-height: 1.1; white-space: normal; }
+  .bubble { display: none; }
+  .affiches { left: 75.4vw; top: 73.4vw; width: 18.6vw; height: 56.6vw; flex-direction: column; gap: 2.4vw; }
+  .affiches .frame { flex: none; width: 100%; padding: 2px; }
+  .affiches .frame:nth-child(2) { display: none; } /* на узкой доске помещаются две афиши */
+  .frame:hover, .frame:focus-visible { transform: none; }
+  .affiches .employee { display: flex; left: -63.2vw; top: 42.8vw; width: 8.7vw; padding: 0; }
+  .employee img { aspect-ratio: 50 / 82; }
+  .employee b { display: none; }
+  .employee::after { content: ''; position: absolute; inset: -12px; } /* зона нажатия побольше */
+  .marquee { display: block; color: var(--brown); border-block: 8px solid var(--red); scroll-margin-top: 0; background: linear-gradient(var(--ink-line) 1px, transparent 1px) 0 0 / 100% 46px, linear-gradient(#fff, var(--cream)); }
+  .wing { --rh: 46px; position: static; width: auto; height: auto; columns: auto; padding: 0 14px; }
+  .wing h2 { font-size: 12px; }
+  .row { font-size: 17px; padding: 0 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}

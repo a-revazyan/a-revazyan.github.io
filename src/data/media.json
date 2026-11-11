@@ -1,0 +1,116 @@
+{
+  "videos": {
+    "ai-influencer-01.mp4": [
+      1080,
+      1440
+    ],
+    "ai-influencer-02.mp4": [
+      960,
+      720
+    ],
+    "ai-influencer-03.mp4": [
+      720,
+      1280
+    ],
+    "ai-influencer-04.mp4": [
+      720,
+      1280
+    ],
+    "ai-influencer-05.mp4": [
+      720,
+      1280
+    ],
+    "calvin-klein.mp4": [
+      1280,
+      720
+    ],
+    "gap.mp4": [
+      1920,
+      1080
+    ],
+    "glam-squad-01.mp4": [
+      720,
+      1280
+    ],
+    "glam-squad-02.mp4": [
+      720,
+      1280
+    ],
+    "glam-squad-03.mp4": [
+      720,
+      1280
+    ],
+    "glam-squad-04.mp4": [
+      720,
+      1280
+    ],
+    "glam-squad-05.mp4": [
+      720,
+      1280
+    ],
+    "glam-squad-making-of.mp4": [
+      720,
+      1280
+    ],
+    "glam-squad-prohodka.mp4": [
+      1112,
+      834
+    ],
+    "kamo-gryadeshi.mp4": [
+      1280,
+      720
+    ],
+    "lit-energy-ad.mp4": [
+      1280,
+      720
+    ],
+    "lit-energy-film.mp4": [
+      1280,
+      720
+    ],
+    "sobaka-ru.mp4": [
+      1440,
+      1080
+    ],
+    "son-raskolnikova.mp4": [
+      1920,
+      1080
+    ],
+    "swarovski.mp4": [
+      720,
+      1280
+    ],
+    "tenoten.mp4": [
+      1920,
+      1080
+    ],
+    "twix.mp4": [
+      1280,
+      720
+    ],
+    "yandex-3d-motion.mp4": [
+      1920,
+      1080
+    ],
+    "zolotoy-klyuch.mp4": [
+      1920,
+      1080
+    ]
+  },
+  "posters": {
+    "glam-squad": "glam-squad.jpg",
+    "son-raskolnikova": "son-raskolnikova.jpg",
+    "gap": "gap.jpg",
+    "swarovski": "swarovski.jpg",
+    "twix": "twix.jpg",
+    "zolotoy-klyuch": "zolotoy-klyuch.jpg",
+    "ai-influencer": "ai-influencer.jpg",
+    "kamo-gryadeshi": "kamo-gryadeshi.jpg",
+    "calvin-klein": "calvin-klein.jpg",
+    "lit-energy-ad": "lit-energy-ad.jpg",
+    "lit-energy-film": "lit-energy-film.jpg",
+    "sobaka-ru": "sobaka-ru.jpg",
+    "tenoten": "tenoten.jpg",
+    "yandex-3d-motion": "yandex-3d-motion.jpg"
+  }
+}
