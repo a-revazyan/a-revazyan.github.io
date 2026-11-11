@@ -113,7 +113,7 @@ export default function Foyer() {
               <source media="(max-width: 640px), (max-width: 860px) and (orientation: portrait)" srcSet="/art/facade-mobile.jpg" />
               <img className="art" src="/art/facade.jpg" alt="Фасад кинотеатра Alina Revazyan" />
             </picture>
-            <Link href="/program" className="entrance" aria-label="Вход: смотреть всю программу без билета">
+            <Link href="/program" className="entrance" aria-label="Вход: смотреть всю программу без билета">
               <span>
                 Entrée
                 <small>смотреть всё</small>
@@ -141,9 +141,9 @@ export default function Foyer() {
           </section>
 
           {/* окно кассы; на телефоне это ссылка с подписью — по ней листаем к списку сеансов */}
-          <a href="#seances" className="window" aria-label="Касса: к списку сеансов">
+          <a href="#seances" className="window" aria-label="Касса: к списку сеансов">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/art/cashier.jpg" alt="Кассир в окошке" className={stage === 'tearing' ? 'is-busy' : ''} />
+            <img src="/art/cashier.jpg" alt="Кассир в окошке" className={stage === 'tearing' ? 'is-busy' : ''} />
             <span className={`subtitle ${stage === 'tearing' ? 'is-busy' : ''}`}>
               {stage === 'tearing' ? 'Одну минуту…' : 'Выберите сеанс'}
             </span>
@@ -156,12 +156,12 @@ export default function Foyer() {
             key={stage === 'tearing' ? 'busy' : 'idle'}
             style={stage === 'tearing' ? { animationDelay: '0s' } : undefined}
           >
-            {stage === 'tearing' ? 'Одну минуту…' : 'Выберите сеанс на табло ↑'}
+            {stage === 'tearing' ? 'Одну минуту…' : 'Выберите сеанс на табло ↑'}
           </div>
 
           <div className="affiches">
             {MAIN.map((w) => (
-              <button key={w.slug} className="frame" onClick={() => choose(w)} aria-label={`Билет на «${w.title}»`}>
+              <button key={w.slug} className="frame" onClick={() => choose(w)} aria-label={`Билет на «${w.title}»`}>
                 <Poster work={w} eager />
               </button>
             ))}
@@ -176,7 +176,7 @@ export default function Foyer() {
 
       <nav className="foyer-nav">
         <Link href="/program" className="btn">
-          Пропустить и смотреть всё
+          Пропустить <span className="br-m" />и смотреть всё
         </Link>
         <Link href="/bar" className="btn btn-ghost">
           Буфет
@@ -184,15 +184,15 @@ export default function Foyer() {
         {pocket > 0 && (
           <span className="pocket">
             {pocket < STUBS_FOR_DISCOUNT
-              ? `корешки: ${pocket} из ${STUBS_FOR_DISCOUNT} — за три скидка 10%`
-              : `корешки: ${pocket} · скидка 10% ждёт в буфете`}
+              ? `корешки: ${pocket} из ${STUBS_FOR_DISCOUNT} — за три скидка 10%`
+              : `корешки: ${pocket} · скидка 10% ждёт в буфете`}
           </span>
         )}
       </nav>
 
       {intro && (
         <div className="intro">
-          <p className="intro-note">Со звуком интереснее</p>
+          <p className="intro-note">Со звуком интереснее</p>
           <div className="intro-title">
             <p>
               <span>Alina Revazyan</span>
@@ -208,7 +208,7 @@ export default function Foyer() {
             </p>
             <p className="spread">Commencer</p>
           </div>
-          <p className="intro-text">Портфолио режиссёра и дизайнера. Возьмите билет в кассе и проходите в зал.</p>
+          <p className="intro-text">Портфолио режиссёра и дизайнера. Возьмите билет в кассе и проходите в зал.</p>
           <button className="btn btn-light" onClick={enterCinema} autoFocus>
             Войти
           </button>
@@ -272,7 +272,7 @@ export default function Foyer() {
           {stage === 'corridor' && (
             <div className="corridor">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/art/corridor.jpg" alt="Коридор к залу" />
+              <img src="/art/corridor.jpg" alt="Коридор к залу" />
             </div>
           )}
 

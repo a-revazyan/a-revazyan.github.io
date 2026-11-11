@@ -131,7 +131,7 @@ body .hall-top, body .page-head { padding-right: 60px; } /* body — чтобы 
 .window { position: absolute; left: 15.2%; top: 57%; width: 15.4%; height: 16.6%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4%; padding: 1%; pointer-events: none; }
 .window { overflow: hidden; background: #160808; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.5); }
 /* кассир (квадратная картинка) вписан по высоте окна целиком, края растворяются в тёмной будке */
-.window img { position: absolute; top: 0; left: 50%; height: 100%; width: auto; aspect-ratio: 1; transform: translateX(-50%); -webkit-mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent); mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent); transition: transform 0.5s var(--ease); }
+.window img { position: absolute; top: 0; left: 50%; height: 100%; width: auto; max-width: none; aspect-ratio: 1; object-fit: cover; transform: translateX(-50%); -webkit-mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent); mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent); transition: transform 0.5s var(--ease); }
 .window img.is-busy { transform: translateX(-50%) scale(1.06) translateY(2%); } /* наклоняется оторвать билет */
 /* реплика кассира: кремовое облачко справа от окна, хвостик смотрит на неё */
 .bubble { position: absolute; left: 28.4%; top: 50.6%; z-index: 1; max-width: 11.5%; padding: 0.9cqh 1.3cqh; background: var(--cream); color: var(--brown); border-radius: 1.6cqh; box-shadow: 0 0.6cqh 1.6cqh rgba(28, 14, 8, 0.45); font: 500 clamp(9px, 1.55cqh, 15px) / 1.25 var(--f-text), sans-serif; text-decoration: none; pointer-events: none; cursor: default; transform-origin: 0 100%; animation: bubble-in 0.45s 0.5s var(--ease) both; }
@@ -155,6 +155,7 @@ body .hall-top, body .page-head { padding-right: 60px; } /* body — чтобы 
 .employee img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 12%; filter: sepia(0.35) contrast(1.05); }
 .employee b { padding: 0.3cqh 0 0; font: 500 clamp(5px, 0.95cqh, 10px) / 1.15 var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.08em; }
 
+.br-m { display: none; }
 .foyer-nav { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; padding: 22px 16px calc(16px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, rgba(28, 14, 8, 0.7)); }
 .pocket { font: 12px var(--f-text), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue); }
 
@@ -416,6 +417,10 @@ body .hall-top, body .page-head { padding-right: 60px; } /* body — чтобы 
 
 /* Вертикальный фасад — только на узких или портретных экранах; низкое широкое окно получает обычную сцену */
 @media (max-width: 640px), (max-width: 860px) and (orientation: portrait) {
+  /* на телефоне громкость и беззвучный режим — кнопками самого телефона; своя кнопка только мешала шапке */
+  .sound-toggle { display: none; }
+  body .hall-top { padding-right: 12px; }
+  body .page-head { padding-right: 0; }
   /* телефон: вертикальный фасад (public/art/facade-mobile.jpg, 1520×2688) на весь первый экран,
      табло сеансов идёт списком под ним. Высота картинки = 176.84vw, отсюда координаты в vw. */
   html { scroll-behavior: smooth; }
@@ -424,6 +429,7 @@ body .hall-top, body .page-head { padding-right: 60px; } /* body — чтобы 
   .coupon-plain { display: block; }
   .bar-scene { width: 100%; }
   .page-head small { font-size: 10px; letter-spacing: 0.1em; white-space: nowrap; }
+  .foyer-nav .br-m { display: block; }
   .foyer-nav .btn { flex: 1; padding: 10px 12px; font-size: 13px; letter-spacing: 0.1em; }
   .pocket { flex-basis: 100%; order: -1; text-align: center; }
   .facade { height: auto; overflow: visible; }

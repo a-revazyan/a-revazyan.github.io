@@ -31,7 +31,7 @@ const SPOTS: { id: string; item: string; size: Size; box: [number, number, numbe
 /** Короткая строка цен для меню-табло */
 const boardPrice = (m: MenuItem) =>
   m.packs.every((p) => p.price == null)
-    ? 'S · M · L — по запросу'
+    ? 'S · M · L — по запросу'
     : `от  ${m.packs.map((p) => `${p.size} ${p.price == null ? '—' : p.price.toLocaleString('ru-RU')}`).join(' · ')} ₽`;
 
 export default function Bar() {
@@ -64,7 +64,7 @@ export default function Bar() {
     const contact = String(f.get('contact') ?? '').trim();
     const task = String(f.get('task') ?? '').trim();
     const text = [
-      'Здравствуйте, Алина! Заказ из буфета:',
+      'Здравствуйте, Алина! Заказ из буфета:',
       `${packName(order.item, order.pack)} (${price(order.pack)})`,
       discount && `Скидка за ${STUBS_FOR_DISCOUNT} корешка: ${DISCOUNT}`,
       `Имя: ${name}`,
@@ -99,7 +99,7 @@ export default function Bar() {
       {/* Сцена: стойка кинобара. Меню на табло, ценники и купон рендерятся кодом поверх картинки. */}
       <div className="bar-scene">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="art" src="/art/bar.jpg" alt="Стойка буфета: попкорн-автомат, три стакана попкорна, напиток, начос, хот-дог, конфеты и мороженое" />
+        <img className="art" src="/art/bar.jpg" alt="Стойка буфета: попкорн-автомат, три стакана попкорна, напиток, начос, хот-дог, конфеты и мороженое" />
 
         <div className="menu-board" aria-label="Меню">
           {menu.map((m) => (
@@ -150,7 +150,7 @@ export default function Bar() {
         </p>
         {discount && (
           <p className="coupon coupon-won">
-            <b>Prime</b> У вас {STUBS_FOR_DISCOUNT} корешка — {DISCOUNT}. Скидка добавится в сообщение заказа.
+            <b>Prime</b> У вас {STUBS_FOR_DISCOUNT} корешка — {DISCOUNT}. Скидка добавится в сообщение заказа.
           </p>
         )}
 
@@ -195,7 +195,7 @@ export default function Bar() {
                 </button>
               ))}
             </div>
-            <p className="bar-what">{pack.what ?? 'Пакет соберём под вашу задачу'}</p>
+            <p className="bar-what">{pack.what ?? 'Пакет соберём под вашу задачу'}</p>
             <p className="price mono">{price(pack)}</p>
             <p className="composition">
               <i>Состав:</i>{' '}
@@ -230,25 +230,25 @@ export default function Bar() {
             <p className="mono">
               {packName(order.item, order.pack)} · {price(order.pack)}
             </p>
-            {discount && <p className="bar-discount">Скидка за корешки: {DISCOUNT}</p>}
+            {discount && <p className="bar-discount">Скидка за корешки: {DISCOUNT}</p>}
             <label>
               Имя
               <input name="name" required autoComplete="name" autoFocus />
             </label>
             <label>
-              Как с вами связаться
-              <input name="contact" required placeholder="Telegram, телефон или почта" />
+              Как с вами связаться
+              <input name="contact" required placeholder="Telegram, телефон или почта" />
             </label>
             <label>
-              Пара слов о задаче
+              Пара слов о задаче
               <textarea name="task" rows={3} />
             </label>
-            <p className="hint">Оплаты на сайте нет: откроется Telegram с готовым сообщением, останется нажать «Отправить».</p>
+            <p className="hint">Оплаты на сайте нет: откроется Telegram с готовым сообщением, останется нажать «Отправить».</p>
             <div className="order-nav">
               <button type="button" className="link" onClick={() => setOrder(null)}>
                 Отмена
               </button>
-              <button className="btn">Отправить в Telegram</button>
+              <button className="btn">Отправить в Telegram</button>
             </div>
           </form>
         </div>
@@ -278,7 +278,7 @@ export default function Bar() {
             <span>Покупатель: {receipt.name}</span>
             <span>Контакт: {receipt.contact}</span>
             <hr />
-            <span>Merci ! Осталось отправить сообщение в Telegram.</span>
+            <span>Merci ! Осталось отправить сообщение в Telegram.</span>
             <a className="btn" href={receipt.url} target="_blank" rel="noreferrer">
               Открыть Telegram ещё раз
             </a>

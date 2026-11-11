@@ -16,7 +16,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://a-revazyan.github.
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: 'Cinéma Alina Revazyan', template: '%s · Cinéma Alina Revazyan' },
-  description: 'Портфолио режиссёра и дизайнера Алины Ревазян в виде кинотеатра: реклама, мини-фильмы, сериалы.',
+  description: 'Портфолио режиссёра и дизайнера Алины Ревазян в виде кинотеатра: реклама, мини-фильмы, сериалы.',
   openGraph: { images: ['/art/facade.jpg'], locale: 'ru_RU', siteName: 'Cinéma Alina Revazyan' },
 };
 

@@ -41,7 +41,7 @@ export default function Hall({ slug }: { slug: string }) {
   useEffect(() => {
     const el = stage.current!;
     const measure = () => setBox({ w: el.clientWidth, h: el.clientHeight });
-    measure(); // сразу, не дожидаясь ResizeObserver (в фоновой вкладке он не срабатывает)
+    measure(); // сразу, не дожидаясь ResizeObserver (в фоновой вкладке он не срабатывает)
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
@@ -207,7 +207,7 @@ export default function Hall({ slug }: { slug: string }) {
                   </span>
                   <b>Съёмка запрещена</b>
                   <em>Défense de filmer</em>
-                  <small>Экранку всё равно никто не досмотрит. Лучше возьмите попкорн.</small>
+                  <small>Экранку всё равно никто не досмотрит. Лучше возьмите попкорн.</small>
                 </button>
               )}
 
@@ -262,7 +262,7 @@ export default function Hall({ slug }: { slug: string }) {
                       setMuted(n === 0);
                     }}
                   />
-                  <button onClick={fullscreen} aria-label="Во весь экран">
+                  <button onClick={fullscreen} aria-label="Во весь экран">
                     ⛶
                   </button>
                 </div>
@@ -274,7 +274,7 @@ export default function Hall({ slug }: { slug: string }) {
                   <h2>{work.title}</h2>
                   {work.about && <p className="about">{work.about}</p>}
                   <p>
-                    Réalisation — <Link href="/director">Алина Ревазян</Link>
+                    Réalisation — <Link href="/director">Алина Ревазян</Link>
                   </p>
                   {work.spec && <p className="spec">Концепт / spec-реклама</p>}
                   <div className="credits-nav">

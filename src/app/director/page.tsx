@@ -4,12 +4,12 @@ import { Ambience } from '@/components/Sound';
 import { INSTAGRAM, TELEGRAM } from '@/lib/bar';
 
 export const metadata: Metadata = {
-  title: 'Встреча с режиссёром',
-  description: 'Алина Ревазян, дизайнер и AI-режиссёр. Реклама, мультфильмы, моушн, 3D и AI-персонажи — каждая сцена как кадр из кино.',
+  title: 'Встреча с режиссёром',
+  description: 'Алина Ревазян, дизайнер и AI-режиссёр. Реклама, мультфильмы, моушн, 3D и AI-персонажи — каждая сцена как кадр из кино.',
   openGraph: { images: ['/art/director-poster.jpg'] },
 };
 
-const SKILLS = ['Реклама', 'Имиджевые ролики', 'Мультфильмы и сериалы', 'Клипы', 'Моушн-дизайн', '3D', 'AI-блогеры'];
+const SKILLS = ['Реклама', 'Имиджевые ролики', 'Мультфильмы и сериалы', 'Клипы', 'Моушн-дизайн', '3D', 'AI-блогеры'];
 
 export default function Page() {
   return (
@@ -21,7 +21,7 @@ export default function Page() {
         </Link>
         <div>
           <small>Ce soir au foyer</small>
-          <h1>Встреча с режиссёром</h1>
+          <h1>Встреча с режиссёром</h1>
         </div>
         <Link href="/program" className="link">
           Программа →
@@ -36,12 +36,12 @@ export default function Page() {
         </div>
 
         <div className="director-notes">
-          <small>Programme · о режиссёре</small>
+          <small>Programme · о режиссёре</small>
           <h2>Алина Ревазян</h2>
-          <p className="lead">Дизайнер и AI-режиссёр</p>
+          <p className="lead">Дизайнер и AI-режиссёр</p>
           <p>
-            Все мои работы начинаются с креатива: я ищу нетривиальные идеи и воплощаю их в проектах. Создаю рекламу,
-            мультфильмы, моушн, 3D и AI-персонажей. Каждую сцену продумываю и выстраиваю в полноценную
+            Все мои работы начинаются с креатива: я ищу нетривиальные идеи и воплощаю их в проектах. Создаю рекламу,
+            мультфильмы, моушн, 3D и AI-персонажей. Каждую сцену продумываю и выстраиваю в полноценную
             кинематографичную картинку.
           </p>
           <ul className="skills">
